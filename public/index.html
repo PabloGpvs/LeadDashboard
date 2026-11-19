@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LeadDashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/layout.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/leads.css">
+    <link rel="stylesheet" href="/css/pipeline.css">
+    <link rel="stylesheet" href="/css/overlays.css">
+    <link rel="stylesheet" href="/css/responsivo.css">
+</head>
+
+<body class="app">
+
+<div class="fundo-grid" aria-hidden="true"></div>
+<div class="sidebar-fundo" id="sidebarFundo"></div>
+
+
+<!-- Menu lateral -->
+<aside class="sidebar" id="sidebar">
+
+    <div class="marca">
+        <div class="marca-logo" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M16 2 28 9v14L16 30 4 23V9Z"/><path d="M11 11v10h9"/></svg>
+        </div>
+        <div class="marca-texto">
+            <strong>Lead<span>Dashboard</span></strong>
+            <small>CRM // v2.0</small>
+        </div>
+    </div>
+
+    <div class="espaco-card" id="blocoEspaco" style="display:none;">
+        <label for="seletorEspaco">Espaço ativo</label>
+        <div class="espaco-select">
+            <select id="seletorEspaco"></select>
+        </div>
+    </div>
+
+    <nav class="nav">
+        <span class="nav-secao">Navegação</span>
+
+        <a class="nav-item" href="#dashboard" data-view="dashboard">
+            <i data-icon="grid"></i><span>Visão geral</span>
+        </a>
+
+        <a class="nav-item" href="#leads" data-view="leads">
+            <i data-icon="list"></i><span>Leads</span>
+            <em class="nav-badge" id="badgeLeads">0</em>
+        </a>
+
+        <a class="nav-item" href="#pipeline" data-view="pipeline">
+            <i data-icon="kanban"></i><span>Pipeline</span>
+        </a>
+
+        <span class="nav-secao">Equipe</span>
+
+        <button type="button" class="nav-item" id="btnEquipe">
+            <i data-icon="userPlus"></i><span>Equipe e convite</span>
+        </button>
+    </nav>
+
+    <div class="sidebar-rodape">
+        <div class="sistema" id="statusSistema" title="Verificando conexão...">
+            <span class="status-ponto" id="statusPonto"></span>
+            <div>
+                <strong id="statusTexto">Verificando...</strong>
+                <small>Servidor · Banco</small>
+            </div>
+        </div>
+    </div>
+
+</aside>
+
+
+<!-- Área principal -->
+<div class="principal">
+
+    <header class="topbar">
+
+        <button type="button" class="btn-icone so-mobile" id="btnMenu" aria-label="Abrir menu">
+            <i data-icon="menu"></i>
+        </button>
+
+        <div class="topbar-titulo">
+            <span class="eyebrow" id="eyebrow">// visão geral</span>
+            <h1 id="tituloPagina">Visão geral</h1>
+        </div>
+
+        <div class="topbar-acoes">
+
+            <label class="busca-global">
+                <i data-icon="search"></i>
+                <input type="search" id="busca" placeholder="Buscar leads..." autocomplete="off">
+                <kbd>/</kbd>
+            </label>
+
+            <button type="button" class="btn-neon" id="btnNovoLead">
+                <i data-icon="plus"></i><span>Novo lead</span>
+            </button>
+
+            <div class="usuario-menu">
+                <button type="button" class="avatar avatar-topo" id="btnAvatar" aria-haspopup="true" aria-expanded="false">
+                    <span id="avatarIniciais">··</span>
+                </button>
+
+                <div class="dropdown" id="menuUsuario" hidden>
+                    <div class="dropdown-cabecalho">
+                        <strong id="usuarioNome">—</strong>
+                        <small id="usuarioEmail">—</small>
+                    </div>
+                    <button type="button" class="dropdown-item" id="btnEquipeMenu">
+                        <i data-icon="userPlus"></i>Equipe e convite
+                    </button>
+                    <button type="button" class="dropdown-item perigo" id="btnSair">
+                        <i data-icon="logout"></i>Sair
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+
+    <main class="conteudo">
+
+        <!-- Visão geral -->
+        <section class="view" id="view-dashboard">
+
+            <div class="kpis">
+                <button type="button" class="kpi" data-kpi="" style="--cor: var(--verde)">
+                    <div class="kpi-topo">
+                        <span class="kpi-rotulo">Total de leads</span>
+                        <i data-icon="target"></i>
+                    </div>
+                    <strong class="kpi-valor" id="kpiTotal">0</strong>
+                    <span class="kpi-sub" id="kpiTotalSub">0 ativos</span>
+                    <span class="kpi-linha"></span>
+                </button>
+
+                <button type="button" class="kpi" data-kpi="QUENTE" style="--cor: var(--quente)">
+                    <div class="kpi-topo">
+                        <span class="kpi-rotulo">Quentes</span>
+                        <i data-icon="flame"></i>
+                    </div>
+                    <strong class="kpi-valor" id="kpiQuente">0</strong>
+                    <span class="kpi-sub" id="kpiQuenteSub">0% dos ativos</span>
+                    <span class="kpi-linha"></span>
+                </button>
+
+                <button type="button" class="kpi" data-kpi="MORNO" style="--cor: var(--morno)">
+                    <div class="kpi-topo">
+                        <span class="kpi-rotulo">Mornos</span>
+                        <i data-icon="thermo"></i>
+                    </div>
+                    <strong class="kpi-valor" id="kpiMorno">0</strong>
+                    <span class="kpi-sub" id="kpiMornoSub">0% dos ativos</span>
+                    <span class="kpi-linha"></span>
+                </button>
+
+                <button type="button" class="kpi" data-kpi="FRIO" style="--cor: var(--frio)">
+                    <div class="kpi-topo">
+                        <span class="kpi-rotulo">Frios</span>
+                        <i data-icon="snow"></i>
+                    </div>
+                    <strong class="kpi-valor" id="kpiFrio">0</strong>
+                    <span class="kpi-sub" id="kpiFrioSub">0% dos ativos</span>
+                    <span class="kpi-linha"></span>
+                </button>
+            </div>
+
+            <div class="grade grade-2-1">
+                <section class="painel">
+                    <div class="painel-topo">
+                        <div>
+                            <span class="eyebrow">// fluxo de entrada</span>
+                            <h3>Leads novos por semana</h3>
+                        </div>
+                        <span class="pilula" id="totalSemanas">0 em 8 semanas</span>
+                    </div>
+                    <div class="grafico-linha" id="graficoLinha"></div>
+                </section>
+
+                <section class="painel">
+                    <div class="painel-topo">
+                        <div>
+                            <span class="eyebrow">// leads ativos</span>
+                            <h3>Temperatura</h3>
+                        </div>
+                    </div>
+                    <div class="donut-wrap" id="graficoDonut"></div>
+                </section>
+            </div>
+
+            <div class="grade grade-3">
+                <section class="painel">
+                    <div class="painel-topo">
+                        <div>
+                            <span class="eyebrow">// canais</span>
+                            <h3>Origem</h3>
+                        </div>
+                    </div>
+                    <div class="barras" id="graficoOrigem"></div>
+                </section>
+
+                <section class="painel">
+                    <div class="painel-topo">
+                        <div>
+                            <span class="eyebrow">// responsáveis</span>
+                            <h3>Vendedores</h3>
+                        </div>
+                    </div>
+                    <div class="barras" id="graficoVendedor"></div>
+                </section>
+
+                <section class="painel">
+                    <div class="painel-topo">
+                        <div>
+                            <span class="eyebrow alerta">// atenção</span>
+                            <h3>Sem contato recente</h3>
+                        </div>
+                        <span class="pilula pilula-alerta" id="totalAtencao">0</span>
+                    </div>
+                    <ul class="lista-atencao" id="listaAtencao"></ul>
+                </section>
+            </div>
+
+        </section>
+
+
+        <!-- Leads (tabela) -->
+        <section class="view" id="view-leads">
+
+            <section class="painel painel-tabela">
+
+                <div class="toolbar">
+                    <div class="filtros">
+                        <label class="campo campo-compacto">
+                            <span>Temperatura</span>
+                            <select id="filtroStatus">
+                                <option value="">Todas</option>
+                                <option value="QUENTE">Quente</option>
+                                <option value="MORNO">Morno</option>
+                                <option value="FRIO">Frio</option>
+                            </select>
+                        </label>
+
+                        <label class="campo campo-compacto">
+                            <span>Origem</span>
+                            <select id="filtroOrigem">
+                                <option value="">Todas</option>
+                                <option value="Site">Site</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="WhatsApp">WhatsApp</option>
+                                <option value="Indicação">Indicação</option>
+                                <option value="Google">Google</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </label>
+
+                        <label class="campo campo-compacto">
+                            <span>Vendedor</span>
+                            <select id="filtroVendedor">
+                                <option value="">Todos</option>
+                            </select>
+                        </label>
+
+                        <label class="campo campo-compacto">
+                            <span>Estado</span>
+                            <select id="filtroEstado">
+                                <option value="">Todos</option>
+                                <option value="ATIVO">Ativos</option>
+                                <option value="INATIVO">Inativos</option>
+                            </select>
+                        </label>
+
+                        <button type="button" class="btn-fantasma" id="btnLimparFiltros">
+                            <i data-icon="x"></i>Limpar
+                        </button>
+                    </div>
+
+                    <div class="toolbar-direita">
+                        <span class="contador" id="resultadoBusca">0 leads</span>
+                        <button type="button" class="btn-fantasma" id="btnExportar">
+                            <i data-icon="download"></i>Exportar CSV
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tabela-wrapper">
+                    <table class="tabela">
+                        <thead>
+                            <tr>
+                                <th class="ordenavel" data-campo="nome">Contato</th>
+                                <th class="ordenavel" data-campo="empresa">Empresa</th>
+                                <th class="ordenavel" data-campo="vendedor">Vendedor</th>
+                                <th class="ordenavel" data-campo="origem">Origem</th>
+                                <th class="ordenavel" data-campo="status">Temperatura</th>
+                                <th class="ordenavel" data-campo="estado">Estado</th>
+                                <th class="ordenavel" data-campo="dataUltimoContato">Último contato</th>
+                                <th class="ordenavel" data-campo="createdAt">Criado</th>
+                                <th class="th-acoes"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaLeads"></tbody>
+                    </table>
+                </div>
+
+                <div class="estado-vazio" id="carregando">
+                    <div class="esqueleto"></div>
+                    <div class="esqueleto"></div>
+                    <div class="esqueleto"></div>
+                </div>
+
+                <div class="estado-vazio" id="semResultados" hidden>
+                    <div class="vazio-icone"><i data-icon="search"></i></div>
+                    <strong id="semResultadosTitulo">Nenhum lead encontrado</strong>
+                    <p id="semResultadosTexto">Ajuste os filtros ou cadastre um novo lead.</p>
+                    <button type="button" class="btn-neon" data-acao="novo"><i data-icon="plus"></i>Novo lead</button>
+                </div>
+
+                <div class="paginacao" id="paginacao" hidden>
+                    <label class="campo campo-inline">
+                        <span>Por página</span>
+                        <select id="itensPorPagina">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </label>
+
+                    <div class="paginacao-botoes">
+                        <button type="button" class="btn-icone" id="btnPaginaAnterior" aria-label="Página anterior"><i data-icon="chevL"></i></button>
+                        <span class="mono" id="textoPagina">01 / 01</span>
+                        <button type="button" class="btn-icone" id="btnProximaPagina" aria-label="Próxima página"><i data-icon="chevR"></i></button>
+                    </div>
+                </div>
+
+            </section>
+        </section>
+
+
+        <!-- Pipeline (kanban) -->
+        <section class="view" id="view-pipeline">
+
+            <p class="dica-pipeline">
+                <i data-icon="activity"></i>
+                Arraste os cartões entre as colunas para mudar a temperatura. Só leads ativos aparecem aqui.
+            </p>
+
+            <div class="kanban">
+                <section class="coluna" data-status="QUENTE" style="--cor: var(--quente)">
+                    <header class="coluna-topo">
+                        <span class="coluna-nome"><i class="ponto"></i>Quente</span>
+                        <span class="coluna-qtd" id="qtdQUENTE">0</span>
+                    </header>
+                    <div class="coluna-cards" id="colQUENTE"></div>
+                </section>
+
+                <section class="coluna" data-status="MORNO" style="--cor: var(--morno)">
+                    <header class="coluna-topo">
+                        <span class="coluna-nome"><i class="ponto"></i>Morno</span>
+                        <span class="coluna-qtd" id="qtdMORNO">0</span>
+                    </header>
+                    <div class="coluna-cards" id="colMORNO"></div>
+                </section>
+
+                <section class="coluna" data-status="FRIO" style="--cor: var(--frio)">
+                    <header class="coluna-topo">
+                        <span class="coluna-nome"><i class="ponto"></i>Frio</span>
+                        <span class="coluna-qtd" id="qtdFRIO">0</span>
+                    </header>
+                    <div class="coluna-cards" id="colFRIO"></div>
+                </section>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+
+<!-- Gaveta: novo / editar lead -->
+<div class="camada" id="drawerFundo" hidden>
+    <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="tituloFormulario">
+
+        <header class="drawer-topo">
+            <div>
+                <span class="eyebrow" id="eyebrowFormulario">// novo registro</span>
+                <h2 id="tituloFormulario">Novo lead</h2>
+            </div>
+            <button type="button" class="btn-icone" id="btnFecharDrawer" aria-label="Fechar"><i data-icon="x"></i></button>
+        </header>
+
+        <form id="formLead" class="drawer-corpo" novalidate>
+
+            <span class="form-secao">Contato</span>
+
+            <div class="form-grid">
+                <label class="campo campo-largo">
+                    <span>Nome *</span>
+                    <input type="text" id="nome" maxlength="120" placeholder="Nome do contato" required>
+                </label>
+
+                <label class="campo">
+                    <span>E-mail *</span>
+                    <input type="email" id="email" maxlength="160" placeholder="email@empresa.com" required>
+                </label>
+
+                <label class="campo">
+                    <span>Telefone</span>
+                    <input type="tel" id="telefone" maxlength="30" placeholder="(11) 99999-9999">
+                </label>
+
+                <label class="campo">
+                    <span>Empresa</span>
+                    <input type="text" id="empresa" maxlength="120" placeholder="Nome da empresa">
+                </label>
+
+                <label class="campo">
+                    <span>Cidade</span>
+                    <input type="text" id="cidade" maxlength="80" placeholder="Cidade">
+                </label>
+            </div>
+
+            <span class="form-secao">Oportunidade</span>
+
+            <div class="campo">
+                <span>Temperatura</span>
+                <div class="chips" id="chipsStatus" role="radiogroup">
+                    <button type="button" class="chip" data-valor="QUENTE" style="--cor: var(--quente)"><i class="ponto"></i>Quente</button>
+                    <button type="button" class="chip ativo" data-valor="MORNO" style="--cor: var(--morno)"><i class="ponto"></i>Morno</button>
+                    <button type="button" class="chip" data-valor="FRIO" style="--cor: var(--frio)"><i class="ponto"></i>Frio</button>
+                </div>
+                <input type="hidden" id="status" value="MORNO">
+            </div>
+
+            <div class="form-grid">
+                <label class="campo">
+                    <span>Vendedor</span>
+                    <input type="text" id="vendedor" maxlength="80" placeholder="Responsável" list="listaVendedores">
+                    <datalist id="listaVendedores"></datalist>
+                </label>
+
+                <label class="campo">
+                    <span>Origem</span>
+                    <select id="origem">
+                        <option value="">Selecione</option>
+                        <option value="Site">Site</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Facebook">Facebook</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Indicação">Indicação</option>
+                        <option value="Google">Google</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </label>
+
+                <label class="campo">
+                    <span>Estado</span>
+                    <select id="estado">
+                        <option value="ATIVO" selected>Ativo</option>
+                        <option value="INATIVO">Inativo</option>
+                    </select>
+                </label>
+
+                <label class="campo">
+                    <span>Último contato</span>
+                    <input type="date" id="dataUltimoContato">
+                </label>
+
+                <label class="campo campo-largo">
+                    <span>Feedback</span>
+                    <input type="text" id="feedback" maxlength="255" placeholder="Ex.: Demonstrou interesse">
+                </label>
+
+                <label class="campo campo-largo">
+                    <span>Observações</span>
+                    <textarea id="observacao" maxlength="2000" placeholder="Informações importantes sobre o lead..."></textarea>
+                </label>
+            </div>
+
+            <div class="form-erro" id="formErro" hidden></div>
+        </form>
+
+        <footer class="drawer-rodape">
+            <button type="button" class="btn-fantasma" id="btnCancelar">Cancelar</button>
+            <button type="submit" form="formLead" class="btn-neon" id="btnSalvar">
+                <i data-icon="check"></i><span>Cadastrar lead</span>
+            </button>
+        </footer>
+    </aside>
+</div>
+
+
+<!-- Modal: detalhes do lead -->
+<div class="camada camada-centro" id="modalFundo" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitulo">
+        <header class="modal-topo">
+            <div class="modal-identidade">
+                <span class="avatar avatar-grande" id="modalAvatar">··</span>
+                <div>
+                    <span class="eyebrow">// ficha do lead</span>
+                    <h2 id="modalTitulo">Lead</h2>
+                </div>
+            </div>
+            <button type="button" class="btn-icone" id="btnFecharModal" aria-label="Fechar"><i data-icon="x"></i></button>
+        </header>
+        <div class="modal-corpo" id="modalCorpo"></div>
+    </div>
+</div>
+
+
+<!-- Modal: equipe e convite -->
+<div class="camada camada-centro" id="modalEquipe" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="equipeTitulo">
+        <header class="modal-topo">
+            <div>
+                <span class="eyebrow">// acesso compartilhado</span>
+                <h2 id="equipeTitulo">Equipe e convite</h2>
+            </div>
+            <button type="button" class="btn-icone" id="btnFecharEquipe" aria-label="Fechar"><i data-icon="x"></i></button>
+        </header>
+
+        <div class="modal-corpo">
+
+            <div class="bloco">
+                <span class="bloco-rotulo">Token de convite · <strong id="equipeNomeEspaco"></strong></span>
+                <p class="bloco-texto">Passe este token para quem precisa acessar os leads deste espaço.</p>
+                <div class="token-linha">
+                    <code class="token-codigo" id="tokenConvite">----</code>
+                    <button type="button" class="btn-fantasma" id="btnCopiarToken"><i data-icon="copy"></i>Copiar</button>
+                    <button type="button" class="btn-fantasma" id="btnNovoToken" hidden><i data-icon="refresh"></i>Gerar novo</button>
+                </div>
+            </div>
+
+            <div class="bloco">
+                <span class="bloco-rotulo">Entrar nos leads de outra empresa</span>
+                <form class="token-linha" id="formEntrarEspaco">
+                    <input type="text" id="inputToken" class="input-token" maxlength="20" placeholder="Cole o token (ex.: K7QM-2XPA)" autocomplete="off">
+                    <button type="submit" class="btn-neon" id="btnEntrarEspaco">Entrar</button>
+                </form>
+            </div>
+
+            <div class="bloco" id="blocoRenomear" hidden>
+                <span class="bloco-rotulo">Nome do espaço</span>
+                <form class="token-linha" id="formRenomear">
+                    <input type="text" id="inputNomeEspaco" class="input-token" maxlength="80">
+                    <button type="submit" class="btn-fantasma">Salvar</button>
+                </form>
+            </div>
+
+            <div class="bloco">
+                <span class="bloco-rotulo" id="tituloMembros">Membros</span>
+                <ul class="lista-membros" id="listaMembros"></ul>
+            </div>
+
+            <div class="modal-acoes" id="blocoSair" hidden>
+                <button type="button" class="btn-perigo" id="btnSairEspaco"><i data-icon="logout"></i>Sair deste espaço</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script type="module" src="/js/main.js"></script>
+
+</body>
+</html>
