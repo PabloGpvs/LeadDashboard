@@ -25,6 +25,7 @@ import {
     sairDoEspaco
 } from "./equipe.js";
 import { abrirImportacao, fecharImportacao } from "./importacao.js";
+import { fecharRelatorio } from "./relatorio.js";
 
 export function configurarEventos() {
     // Navegação
@@ -157,6 +158,7 @@ export function configurarEventos() {
         if (e.key === "Escape") {
             if (!$("menuUsuario").hidden) fecharMenuUsuario();
             else if (!$("modalImportacao").hidden) fecharImportacao();
+            else if (!$("modalRelatorio").hidden) fecharRelatorio();
             else if (!$("modalEquipe").hidden) fecharEquipe();
             else if (!$("modalFundo").hidden) fecharModal();
             else if (!$("drawerFundo").hidden) fecharDrawer();
@@ -169,9 +171,13 @@ export function configurarEventos() {
             $("busca").focus();
         }
 
-        const algoAberto = ["drawerFundo", "modalFundo", "modalEquipe", "modalImportacao"].some(
-            id => !$(id).hidden
-        );
+        const algoAberto = [
+            "drawerFundo",
+            "modalFundo",
+            "modalEquipe",
+            "modalImportacao",
+            "modalRelatorio"
+        ].some(id => !$(id).hidden);
         if (
             !digitando &&
             !algoAberto &&

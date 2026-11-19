@@ -14,6 +14,8 @@ Feito com Node.js, Express, Prisma e PostgreSQL. O front é HTML, CSS e JavaScri
 - Ver a **visão geral**: totais, leads novos por semana, temperatura, origem, vendedores
   e quem está sem contato há muito tempo
 - Filtrar, buscar, ordenar e exportar a lista para CSV
+- Gerar uma planilha Excel com os leads de um ou mais vendedores (uma aba por vendedor
+  ou tudo junto, com aba de resumo), filtrando por temperatura, situação e período
 - Importar leads de uma planilha Excel (.xlsx) ou CSV — dá pra baixar uma planilha modelo,
   e as colunas são reconhecidas automaticamente (dá pra ajustar antes de importar)
 - Arrastar leads entre Quente, Morno e Frio no **pipeline**
@@ -68,7 +70,7 @@ public/
   login.html, cadastro.html
   css/                    um arquivo por área da tela
   js/                     módulos do front (main.js é o ponto de entrada)
-  vendor/                 read-excel-file, para ler planilhas .xlsx no navegador
+  vendor/                 read-excel-file e write-excel-file, para ler e gerar .xlsx no navegador
 ```
 
 ## API

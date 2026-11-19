@@ -1,0 +1,146 @@
+/* Gerador de planilha por vendedor */
+
+.btn-compacto {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+}
+
+.btn-compacto .ico {
+    width: 14px;
+    height: 14px;
+}
+
+.rel-topo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.rel-topo .bloco-rotulo {
+    margin-bottom: 0;
+}
+
+.link-acao {
+    padding: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--verde);
+    background: none;
+    border: none;
+}
+
+.link-acao:hover {
+    text-decoration: underline;
+}
+
+.rel-vendedores {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    max-height: 240px;
+    overflow-y: auto;
+}
+
+.rel-vendedor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    font-size: 13px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--borda);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.rel-vendedor:hover {
+    border-color: var(--borda-3);
+}
+
+.rel-vendedor:has(input:checked) {
+    background: var(--verde-fraco);
+    border-color: rgba(34, 229, 122, 0.4);
+}
+
+.rel-vendedor input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--verde);
+    cursor: pointer;
+}
+
+.rel-vendedor-nome {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.rel-vendedor-qtd {
+    padding: 1px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--t2);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 999px;
+}
+
+.rel-vendedor:has(input:checked) .rel-vendedor-qtd {
+    color: var(--verde);
+    background: rgba(34, 229, 122, 0.12);
+}
+
+.rel-filtros {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.rel-filtros .campo:first-child {
+    grid-column: 1 / -1;
+}
+
+.rel-formato {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rel-rodape {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 4px;
+}
+
+.rel-rodape .modal-acoes {
+    padding-top: 0;
+}
+
+@media (max-width: 700px) {
+    .rel-vendedores,
+    .rel-filtros {
+        grid-template-columns: 1fr;
+    }
+
+    .rel-rodape {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .rel-rodape .modal-acoes {
+        justify-content: stretch;
+    }
+
+    .rel-rodape .modal-acoes button {
+        flex: 1;
+        justify-content: center;
+    }
+}

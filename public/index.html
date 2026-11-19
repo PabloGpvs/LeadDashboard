@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/pipeline.css">
     <link rel="stylesheet" href="/css/overlays.css">
     <link rel="stylesheet" href="/css/importacao.css">
+    <link rel="stylesheet" href="/css/relatorio.css">
     <link rel="stylesheet" href="/css/responsivo.css">
 </head>
 
@@ -217,6 +218,9 @@
                             <span class="eyebrow">// responsáveis</span>
                             <h3>Vendedores</h3>
                         </div>
+                        <button type="button" class="btn-fantasma btn-compacto" id="btnRelatorioDash" title="Gerar planilha por vendedor">
+                            <i data-icon="sheet"></i>Planilha
+                        </button>
                     </div>
                     <div class="barras" id="graficoVendedor"></div>
                 </section>
@@ -292,6 +296,9 @@
                         <span class="contador" id="resultadoBusca">0 leads</span>
                         <button type="button" class="btn-fantasma" id="btnImportar">
                             <i data-icon="upload"></i>Importar
+                        </button>
+                        <button type="button" class="btn-fantasma" id="btnRelatorio">
+                            <i data-icon="sheet"></i>Gerar planilha
                         </button>
                         <button type="button" class="btn-fantasma" id="btnExportar">
                             <i data-icon="download"></i>Exportar CSV
@@ -654,6 +661,91 @@
                     <button type="button" class="btn-neon" id="impConcluir"><i data-icon="check"></i><span>Ver leads</span></button>
                 </div>
             </section>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal: gerar planilha por vendedor -->
+<div class="camada camada-centro" id="modalRelatorio" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="relatorioTitulo">
+        <header class="modal-topo">
+            <div>
+                <span class="eyebrow">// gerar planilha</span>
+                <h2 id="relatorioTitulo">Planilha por vendedor</h2>
+            </div>
+            <button type="button" class="btn-icone" id="btnFecharRelatorio" aria-label="Fechar"><i data-icon="x"></i></button>
+        </header>
+
+        <div class="modal-corpo">
+
+            <div class="bloco">
+                <div class="rel-topo">
+                    <span class="bloco-rotulo">Vendedores</span>
+                    <button type="button" class="link-acao" id="relTodos">Desmarcar todos</button>
+                </div>
+                <div class="rel-vendedores" id="relVendedores"></div>
+            </div>
+
+            <div class="bloco">
+                <span class="bloco-rotulo">Filtros (opcional)</span>
+                <div class="rel-filtros">
+                    <div class="campo">
+                        <span>Temperatura</span>
+                        <div class="chips" id="relTemperaturas">
+                            <button type="button" class="chip ativo" data-valor="QUENTE" style="--cor: var(--quente)"><i class="ponto"></i>Quente</button>
+                            <button type="button" class="chip ativo" data-valor="MORNO" style="--cor: var(--morno)"><i class="ponto"></i>Morno</button>
+                            <button type="button" class="chip ativo" data-valor="FRIO" style="--cor: var(--frio)"><i class="ponto"></i>Frio</button>
+                        </div>
+                    </div>
+
+                    <label class="campo">
+                        <span>Situação</span>
+                        <select id="relSituacao">
+                            <option value="">Ativos e inativos</option>
+                            <option value="ATIVO">Só ativos</option>
+                            <option value="INATIVO">Só inativos</option>
+                        </select>
+                    </label>
+
+                    <label class="campo">
+                        <span>Criados a partir de</span>
+                        <input type="date" id="relDe">
+                    </label>
+
+                    <label class="campo">
+                        <span>Até</span>
+                        <input type="date" id="relAte">
+                    </label>
+                </div>
+            </div>
+
+            <div class="bloco" id="relFormatoBloco" hidden>
+                <span class="bloco-rotulo">Como organizar</span>
+                <div class="rel-formato">
+                    <label class="check">
+                        <input type="radio" name="relFormato" value="abas" checked>
+                        <span>Uma aba para cada vendedor</span>
+                    </label>
+                    <label class="check">
+                        <input type="radio" name="relFormato" value="unica" id="relFormatoUnico">
+                        <span>Todos numa aba só (com coluna Vendedor)</span>
+                    </label>
+                    <label class="check">
+                        <input type="checkbox" id="relResumo" checked>
+                        <span>Incluir aba de resumo com os totais de cada vendedor</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="rel-rodape">
+                <span class="contador" id="relContador"></span>
+                <div class="modal-acoes">
+                    <button type="button" class="btn-fantasma" id="relCancelar">Cancelar</button>
+                    <button type="button" class="btn-neon" id="relGerar"><i data-icon="download"></i><span>Gerar planilha</span></button>
+                </div>
+            </div>
 
         </div>
     </div>
