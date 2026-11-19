@@ -1,0 +1,16 @@
+node_modules/
+.env
+*.log
+
+# backups locais
+_backup_original/
+
+# arquivos gerados pelo "prisma skills sync" (postinstall)
+.agents/
+.claude/
+.cursor/
+.devin/
+
+# sistema
+.DS_Store
+Thumbs.db

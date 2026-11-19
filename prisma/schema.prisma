@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id                Int       @id @default(autoincrement())
+  nome              String
+  email             String
+  telefone          String?
+  empresa           String?
+  vendedor          String?
+  cidade            String?
+  status            String    @default("MORNO")
+  estado            String    @default("ATIVO")
+  origem            String?
+  observacao        String?
+  feedback          String?
+  dataUltimoContato DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // Espaço (conta/empresa) dono do lead
+  espacoId          Int?
+  espaco            Espaco?   @relation(fields: [espacoId], references: [id], onDelete: Cascade)
+
+  @@index([espacoId])
+}
+
+model Usuario {
+  id        Int       @id @default(autoincrement())
+  nome      String
+  email     String    @unique
+  senhaHash String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  membros   Membro[]
+}
+
+// Cada conta cria o seu espaço; outras pessoas entram nele pelo token de convite
+model Espaco {
+  id            Int      @id @default(autoincrement())
+  nome          String
+  codigoConvite String   @unique
+  tipo          String   @default("USUARIO") // USUARIO ou EMPRESA
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  membros       Membro[]
+  leads         Lead[]
+}
+
+model Membro {
+  usuarioId Int
+  espacoId  Int
+  papel     String   @default("MEMBRO") // DONO ou MEMBRO
+  createdAt DateTime @default(now())
+
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  espaco    Espaco   @relation(fields: [espacoId], references: [id], onDelete: Cascade)
+
+  @@id([usuarioId, espacoId])
+}
