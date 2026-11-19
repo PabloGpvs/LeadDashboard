@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LeadDashboard</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="/css/leads.css">
     <link rel="stylesheet" href="/css/pipeline.css">
     <link rel="stylesheet" href="/css/overlays.css">
+    <link rel="stylesheet" href="/css/importacao.css">
     <link rel="stylesheet" href="/css/responsivo.css">
 </head>
 
@@ -288,6 +290,9 @@
 
                     <div class="toolbar-direita">
                         <span class="contador" id="resultadoBusca">0 leads</span>
+                        <button type="button" class="btn-fantasma" id="btnImportar">
+                            <i data-icon="upload"></i>Importar
+                        </button>
                         <button type="button" class="btn-fantasma" id="btnExportar">
                             <i data-icon="download"></i>Exportar CSV
                         </button>
@@ -323,7 +328,10 @@
                     <div class="vazio-icone"><i data-icon="search"></i></div>
                     <strong id="semResultadosTitulo">Nenhum lead encontrado</strong>
                     <p id="semResultadosTexto">Ajuste os filtros ou cadastre um novo lead.</p>
-                    <button type="button" class="btn-neon" data-acao="novo"><i data-icon="plus"></i>Novo lead</button>
+                    <div class="vazio-acoes">
+                        <button type="button" class="btn-fantasma" data-acao="importar"><i data-icon="upload"></i>Importar planilha</button>
+                        <button type="button" class="btn-neon" data-acao="novo"><i data-icon="plus"></i>Novo lead</button>
+                    </div>
                 </div>
 
                 <div class="paginacao" id="paginacao" hidden>
@@ -565,6 +573,88 @@
             <div class="modal-acoes" id="blocoSair" hidden>
                 <button type="button" class="btn-perigo" id="btnSairEspaco"><i data-icon="logout"></i>Sair deste espaço</button>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal: importar planilha -->
+<div class="camada camada-centro" id="modalImportacao" hidden>
+    <div class="modal modal-largo" role="dialog" aria-modal="true" aria-labelledby="importacaoTitulo">
+        <header class="modal-topo">
+            <div>
+                <span class="eyebrow">// importar planilha</span>
+                <h2 id="importacaoTitulo">Importar leads</h2>
+            </div>
+            <button type="button" class="btn-icone" id="btnFecharImportacao" aria-label="Fechar"><i data-icon="x"></i></button>
+        </header>
+
+        <div class="modal-corpo">
+
+            <section id="impEtapaArquivo">
+                <label class="zona-arquivo" id="zonaArquivo">
+                    <input type="file" id="inputPlanilha" accept=".xlsx,.csv" hidden>
+                    <span class="zona-icone"><i data-icon="sheet"></i></span>
+                    <strong>Arraste a planilha aqui ou clique para escolher</strong>
+                    <small>Excel (.xlsx) ou CSV · até 2.000 linhas</small>
+                </label>
+
+                <div class="imp-dicas">
+                    <p>
+                        <strong>Usa Google Planilhas?</strong> Abra a planilha e vá em
+                        <em>Arquivo → Fazer download → Microsoft Excel (.xlsx)</em>.
+                    </p>
+                    <p>A primeira linha deve ter os nomes das colunas. Nome e e-mail são obrigatórios.</p>
+                    <button type="button" class="btn-fantasma" id="btnModelo"><i data-icon="download"></i>Baixar planilha modelo</button>
+                </div>
+            </section>
+
+            <section id="impEtapaMapa" hidden>
+                <div class="imp-arquivo">
+                    <i data-icon="sheet"></i>
+                    <strong id="impNomeArquivo"></strong>
+                    <label class="campo campo-inline" id="impBlocoAba" hidden>
+                        <span>Aba</span>
+                        <select id="impAba"></select>
+                    </label>
+                </div>
+
+                <div class="bloco">
+                    <span class="bloco-rotulo">Qual coluna da planilha vai para cada campo</span>
+                    <div class="imp-mapa" id="impMapa"></div>
+                </div>
+
+                <div class="bloco">
+                    <div class="imp-previa-topo">
+                        <span class="bloco-rotulo">Prévia</span>
+                        <div class="imp-resumo" id="impResumo"></div>
+                    </div>
+                    <div class="tabela-wrapper">
+                        <table class="tabela-previa" id="impPrevia"></table>
+                    </div>
+                    <p class="bloco-texto imp-mais" id="impMaisLinhas"></p>
+                </div>
+
+                <label class="check">
+                    <input type="checkbox" id="impIgnorarDuplicados" checked>
+                    <span>Pular leads com e-mail que já existe neste espaço</span>
+                </label>
+
+                <div class="form-erro" id="impErro" hidden></div>
+
+                <div class="modal-acoes">
+                    <button type="button" class="btn-fantasma" id="impVoltar">Escolher outro arquivo</button>
+                    <button type="button" class="btn-neon" id="impConfirmar"><i data-icon="upload"></i><span>Importar</span></button>
+                </div>
+            </section>
+
+            <section id="impEtapaResultado" hidden>
+                <div class="imp-resultado" id="impResultado"></div>
+                <div class="modal-acoes">
+                    <button type="button" class="btn-neon" id="impConcluir"><i data-icon="check"></i><span>Ver leads</span></button>
+                </div>
+            </section>
+
         </div>
     </div>
 </div>

@@ -3,9 +3,11 @@ import { carregarUsuario, verificarSistema } from "./sessao.js";
 import { mostrarView } from "./navegacao.js";
 import { carregarLeads } from "./dados.js";
 import { configurarEventos } from "./eventos.js";
+import { configurarImportacao } from "./importacao.js";
 
 hidratarIcones();
 configurarEventos();
+configurarImportacao();
 mostrarView(location.hash.slice(1) || "dashboard");
 verificarSistema();
 setInterval(verificarSistema, 30000);

@@ -24,6 +24,7 @@ import {
     renomearEspaco,
     sairDoEspaco
 } from "./equipe.js";
+import { abrirImportacao, fecharImportacao } from "./importacao.js";
 
 export function configurarEventos() {
     // Navegação
@@ -106,6 +107,7 @@ export function configurarEventos() {
         const id = Number(alvo.dataset.id);
         const acao = alvo.dataset.acao;
         if (acao === "novo") abrirDrawer();
+        if (acao === "importar") abrirImportacao();
         if (acao === "editar") {
             const lead = estado.todosOsLeads.find(l => l.id === id);
             if (lead) abrirDrawer(lead);
@@ -154,6 +156,7 @@ export function configurarEventos() {
 
         if (e.key === "Escape") {
             if (!$("menuUsuario").hidden) fecharMenuUsuario();
+            else if (!$("modalImportacao").hidden) fecharImportacao();
             else if (!$("modalEquipe").hidden) fecharEquipe();
             else if (!$("modalFundo").hidden) fecharModal();
             else if (!$("drawerFundo").hidden) fecharDrawer();
@@ -166,7 +169,9 @@ export function configurarEventos() {
             $("busca").focus();
         }
 
-        const algoAberto = !$("drawerFundo").hidden || !$("modalFundo").hidden || !$("modalEquipe").hidden;
+        const algoAberto = ["drawerFundo", "modalFundo", "modalEquipe", "modalImportacao"].some(
+            id => !$(id).hidden
+        );
         if (
             !digitando &&
             !algoAberto &&

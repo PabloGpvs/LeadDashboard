@@ -7,6 +7,7 @@ const router = Router();
 router.get("/", rotaAsync(leads.listar));
 router.get("/:id", rotaAsync(leads.buscar));
 router.post("/", rotaAsync(leads.criar));
+router.post("/importar", rotaAsync(leads.importar));
 router.put("/:id", rotaAsync(leads.atualizar));
 router.delete("/:id", rotaAsync(leads.excluir));
 

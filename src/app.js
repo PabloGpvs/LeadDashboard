@@ -17,7 +17,8 @@ const pagina = nome => (req, res) => res.sendFile(path.join(PASTA_PUBLICA, nome)
 const app = express();
 
 app.use(cors({ origin: CORS_ORIGEM, credentials: true }));
-app.use(express.json({ limit: "100kb" }));
+// limite maior por causa da importação de planilhas
+app.use(express.json({ limit: "2mb" }));
 
 // Arquivos estáticos (CSS, JS) são públicos — os dados ficam protegidos na API
 app.use(express.static(PASTA_PUBLICA, { index: false }));

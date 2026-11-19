@@ -14,6 +14,8 @@ Feito com Node.js, Express, Prisma e PostgreSQL. O front é HTML, CSS e JavaScri
 - Ver a **visão geral**: totais, leads novos por semana, temperatura, origem, vendedores
   e quem está sem contato há muito tempo
 - Filtrar, buscar, ordenar e exportar a lista para CSV
+- Importar leads de uma planilha Excel (.xlsx) ou CSV — dá pra baixar uma planilha modelo,
+  e as colunas são reconhecidas automaticamente (dá pra ajustar antes de importar)
 - Arrastar leads entre Quente, Morno e Frio no **pipeline**
 - Compartilhar o espaço: cada espaço tem um token de convite (ex.: `K7QM-2XPA`); quem
   cola o token em *Equipe e convite* passa a ver os leads dele
@@ -66,6 +68,7 @@ public/
   login.html, cadastro.html
   css/                    um arquivo por área da tela
   js/                     módulos do front (main.js é o ponto de entrada)
+  vendor/                 read-excel-file, para ler planilhas .xlsx no navegador
 ```
 
 ## API
@@ -83,6 +86,7 @@ Tudo em `/leads` e `/espacos` exige login e só enxerga os dados do espaço atua
 | `POST` | `/leads` | `nome` e `email` são obrigatórios |
 | `PUT` | `/leads/:id` | atualiza só os campos enviados |
 | `DELETE` | `/leads/:id` | |
+| `POST` | `/leads/importar` | `{ leads: [...], ignorarDuplicados }` — até 2.000 por vez |
 | `POST` | `/espacos/entrar` | `{ codigo }` entra num espaço pelo token |
 | `POST` | `/espacos/trocar` | `{ espacoId }` |
 | `GET` | `/espacos/membros` | |
